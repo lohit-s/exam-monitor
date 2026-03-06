@@ -101,7 +101,7 @@
         <div class="title">Student Exam Screen</div>
         <div style="font-size: 12px; color:#9ca3af;">Tab change tracking enabled</div>
       </div>
-      <div class="pill">Admin IP: 192.168.1.8</div>
+      <div class="pill">Online Exam Monitor</div>
     </div>
 
     <div class="section">
@@ -149,7 +149,7 @@
   </div>
 
   <script>
-    const API_BASE = "http://192.168.1.8:5000";
+    const API_BASE = "https://exam-monitor-0dm2.onrender.com"; // ✅ Render URL
 
     const rollInput = document.getElementById("rollNo");
     const durationInput = document.getElementById("duration");
@@ -212,7 +212,7 @@
         }, 1000);
       } catch (err) {
         console.error(err);
-        showStatus("Cannot reach server (192.168.1.8:5000)", false);
+        showStatus("Cannot reach server. Please try again.", false);
       }
     }
 
