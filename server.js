@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -28,18 +27,14 @@ app.post("/api/students", (req, res) => {
     }
     const roll = rollNo.trim();
     const exists = students.find((s) => s.rollNo === roll);
-    if (!exists) {
-      students.push({ rollNo: roll });
-    }
+    if (!exists) students.push({ rollNo: roll });
     res.json({ success: true, students });
   } catch (err) {
-    res.status(500).json({ error: "Server error while saving student" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get("/api/students", (req, res) => {
-  res.json(students);
-});
+app.get("/api/students", (req, res) => res.json(students));
 
 app.post("/api/start-exam", (req, res) => {
   try {
@@ -48,24 +43,17 @@ app.post("/api/start-exam", (req, res) => {
       return res.status(400).json({ error: "Roll No required" });
     }
     const roll = rollNo.trim();
-    const dur = Number(duration) || 0;
-    const startTime = new Date().toISOString();
-    const examData = { rollNo: roll, duration: dur, startTime };
+    const examData = { rollNo: roll, duration: Number(duration) || 0, startTime: new Date().toISOString() };
     const idx = activeExams.findIndex((e) => e.rollNo === roll);
-    if (idx >= 0) {
-      activeExams[idx] = examData;
-    } else {
-      activeExams.push(examData);
-    }
+    if (idx >= 0) activeExams[idx] = examData;
+    else activeExams.push(examData);
     res.json({ success: true, activeExams });
   } catch (err) {
-    res.status(500).json({ error: "Server error while starting exam" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get("/api/active-exams", (req, res) => {
-  res.json(activeExams);
-});
+app.get("/api/active-exams", (req, res) => res.json(activeExams));
 
 app.post("/api/simulate-cheat", (req, res) => {
   try {
@@ -73,30 +61,16 @@ app.post("/api/simulate-cheat", (req, res) => {
     if (!rollNo || !rollNo.trim()) {
       return res.status(400).json({ error: "Roll No required" });
     }
-    const roll = rollNo.trim();
-    const time = new Date().toISOString();
-    const flag = { rollNo: roll, site: site || "TAB_EXIT", time };
+    const flag = { rollNo: rollNo.trim(), site: site || "TAB_EXIT", time: new Date().toISOString() };
     flags.push(flag);
     res.json({ success: true, flag });
   } catch (err) {
-    res.status(500).json({ error: "Server error while logging flag" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.get("/api/flags", (req, res) => {
-  res.json(flags);
-});
+app.get("/api/flags", (req, res) => res.json(flags));
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
-```
-
-### STEP 3:
-**"Commit changes"** green button click பண்ணு ✅
-
----
-
-Render auto-deploy ஆனதும்:
-```
-https://exam-monitor-0dm2.onrender.com/exam
